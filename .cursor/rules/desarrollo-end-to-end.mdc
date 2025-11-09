@@ -1,0 +1,56 @@
+---
+description: Directrices de arquitectura y flujo base para construir El Impostor en Next.js App Router
+globs: src/**/*
+alwaysApply: true
+---
+
+# Desarrollo End-to-End
+
+## 1. Configuración y arquitectura
+
+1. Crea páginas dentro de `src/app` usando App Router; separa componentes de UI en `src/app/(components)` u otra carpeta dedicada.
+2. Declara componentes como funciones puras con TypeScript estricto (`tsconfig.json` ya activa `strict: true`); evita `any` y propaga tipos con `zod` cuando provengan de datos externos.
+3. Mantén la lógica de dominio en módulos puros (`src/lib/**`): sin side effects, parámetros inmutables y retornos explícitos (`Result`/`Either` si se espera error).
+4. Usa composición: combina hooks personalizados (`usePlayers`, `useGameFlow`) con funciones puras para delegar cada responsabilidad (UI, lógica, persistencia).
+
+## 2. Estado y persistencia
+
+1. Utiliza `useReducer` con acciones serializables para la sesión de partida; limita React Context a exponer estado/dispatch.
+2. Persiste configuraciones ligeras (`categoría`, `jugadores`) vía `localStorage`; sincroniza colecciones de palabras/categorías con `IndexedDB` usando `idb-keyval`.
+3. Encapsula accesos a almacenamiento en servicios puros que validen con `zod` antes de escribir; para fallos, devuelve errores tipados y deja que la UI decida la respuesta.
+4. Carga archivos `.json` estáticos desde `app` o `lib/data`; replica en almacenamiento local antes de permitir edición.
+
+## 3. Reglas de negocio clave
+
+1. Al iniciar partida, confirma mínimo 4 jugadores únicos y que la categoría tenga palabras disponibles; muestra mensajes claros si no se cumplen.
+2. Selecciona la palabra mediante `crypto.getRandomValues`; permite `seedrandom` únicamente en pruebas.
+3. Marca exactamente un impostor por ronda y guarda palabra/impostor solo en memoria de la sesión actual.
+4. Implementa categoría “Random” mezclando palabras de categorías activas en memoria (sin efectos secundarios).
+
+## 4. Flujo de asignación
+
+1. **Configurar partida (`RF-01`, `RF-02`):** pantalla inicial mobile-first con formulario accesible; ordena jugadores con drag & drop o controles discretos.
+2. **Asignar palabra (`RF-03`, `RF-04`):** encapsula en función pura `assignRoles({ players, category })` que devuelva `{word, impostorId, revealOrder}`.
+3. **Mostrar roles (`RF-05`):** presenta pantalla de revelado a pantalla completa; incluye controles “Mostrar de nuevo” y “Siguiente” con confirmación modal (`headlessui` si es necesario).
+4. **Cerrar ronda (`RF-06`, `RF-07`):** pantalla “¡A jugar!” con CTA “Siguiente ronda” que reusa configuraciones e invoca de nuevo `assignRoles`.
+
+## 5. Diseño y experiencia
+
+1. Aplica enfoque mobile-first con breakpoints `375px`, `768px`, `1024px`; usa layout fluido (`flex`, `grid`).
+2. Implementa design system siguiendo Atomic Design: tokens (`tailwind.config.js`), primitives (`Button`, `Card`), compuestos (`PlayerList`).
+3. Usa `clsx` para combinar clases y `Framer Motion` para transiciones discretas (cambio de jugador, pantalla final).
+4. Respeta WCAG 2.1 AA; incluye modo alto contraste con toggle que reinterprete tokens de color.
+
+## 6. Errores y validaciones
+
+1. Valida entradas con `zod` y lanza excepciones controladas con mensajes descriptivos (sin strings genéricas).
+2. Evita mutar argumentos; usa helpers como `Array.from` o `structuredClone` antes de modificarlos.
+3. Registra errores críticos en `Sentry` solo cuando afecten interacción del jugador; evita enviar datos sensibles.
+4. Sanitiza nombres de jugadores antes de renderizarlos (escapar caracteres y recortar espacios redundantes).
+
+## 7. Calidad y DevOps
+
+1. Ejecuta `pnpm lint`, `pnpm test`, `pnpm storybook` según el ámbito antes de abrir PR.
+2. Escribe pruebas con `Vitest` + `@testing-library/react` para reglas de asignación y hooks; usa `seedrandom` para resultados deterministas.
+3. Documenta componentes en Storybook y corre `@storybook/addon-a11y`.
+4. Asegura despliegues en Vercel pasando CI (lint + tests + `next build`); configura `Sentry` y `Vercel Analytics`.

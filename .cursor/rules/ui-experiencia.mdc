@@ -1,0 +1,38 @@
+---
+description: Pautas de experiencia de usuario y diseño visual para las pantallas de El Impostor
+globs: src/app/**/*
+alwaysApply: false
+---
+
+# UX y Diseño Visual
+
+## 1. Enfoque mobile-first
+
+1. Diseña cada pantalla iniciando en 375px; expande progresivamente a `md` (768px) y `lg` (1024px).
+2. Usa `Tailwind` con tokens configurados; evita valores mágicos en línea, extrae utilidades recurrentes.
+3. Mantén layout fluido con `grid` y `flex`; aplica `gap` constante derivado de la escala de espacio del design system.
+
+## 2. Identidad visual
+
+1. Aplica paleta inspirada en luces teatrales: gradientes suaves, sombras volumétricas discretas; controla contraste para AA.
+2. Combina tipografía display (Google Fonts) para títulos y sans-serif limpia para cuerpo; usa monoespaciada solo para detalles UI secundarios.
+3. Implementa glassmorphism y neumorfismo plano con moderación para tarjetas de palabras; documenta tokens en Storybook.
+
+## 3. Componentes y Atomic Design
+
+1. Construye tokens (`colors`, `spacing`, `radius`) en `tailwind.config.js`; versiona en `src/styles/tokens`.
+2. Define primitives reutilizables (`Button`, `Card`, `Badge`) y mantén composiciones (`PlayerList`, `RevealFlow`) libres de lógica de negocio.
+3. Exporta componentes accesibles (atributos ARIA, focus visible); usa `headlessui` solo cuando la semántica lo exige (modales, listas interactivas).
+
+## 4. Animaciones y microinteracciones
+
+1. integra `Framer Motion` para transiciones entre jugadores y pantalla “¡A jugar!”; prioriza animaciones de 200-300ms con easing suave.
+2. Mantén animaciones opcionales para modo alto contraste; ofrece fallbacks sin animar si `prefers-reduced-motion`.
+3. Documenta animaciones clave en Storybook con stories interactivos.
+
+## 5. Accesibilidad y soporte
+
+1. Garantiza contraste AA incluso en modo alto contraste; configura toggle que reinterprete tokens (sin recalcular en línea).
+2. Asegura navegación por teclado completa: `tabindex` natural, `aria-live` cuando se muestran avisos críticos.
+3. Redacta mensajes y errores en lenguaje natural (“Agrega al menos 4 jugadores para comenzar”).
+4. Antes de entregar una pantalla, ejecuta pruebas con `@storybook/addon-a11y` y `axe` en Testing Library.

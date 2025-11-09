@@ -1,0 +1,38 @@
+---
+description: Lineamientos para manejo de datos, validaciones y aseguramiento de calidad en El Impostor
+globs: ["src/lib/**/*", "src/data/**/*", "tests/**/*"]
+alwaysApply: false
+---
+
+# Datos, Validaciones y QA
+
+## 1. Datos estáticos y locales
+
+1. Mantén categorías y palabras en archivos `.json` bajo `src/data/categories`; versiona todos los cambios.
+2. Al cargar datos, clona estructuras inmutables y sincroniza con `IndexedDB` mediante servicios encapsulados (`categoryStore.ts`).
+3. Evita lecturas/escrituras directas desde componentes; expón funciones puras (`loadCategories`, `saveCategory`) que devuelvan `Promise<Result<T, Error>>`.
+
+## 2. Validaciones con zod
+
+1. Declara esquemas (`CategorySchema`, `PlayerSchema`) en `src/lib/schema`; comparte tipos inferidos (`z.infer`).
+2. Valida toda entrada antes de persistir o usar en lógica; para errores, lanza `DomainError` con mensaje claro y código de causa (`'min-players'`, `'empty-category'`).
+3. Al sanitizar nombres de jugadores, usa helpers que recorten, normalicen y verifiquen caracteres seguros antes de renderizar.
+
+## 3. Asignación y aleatoriedad
+
+1. Implementa `assignRoles` como función pura tomando `{ players, words, seed? }`; usa `crypto.getRandomValues` en producción y `seedrandom` en pruebas.
+2. Asegura un único impostor y evita repetir palabra dentro de la misma ronda; conserva estado temporal en memoria (`useReducer`), no en almacenamiento persistente.
+3. Cubre casos extremos: menos de 4 jugadores, categorías sin palabras disponibles, jugadores duplicados.
+
+## 4. Persistencia y limpieza
+
+1. Guarda preferencias ligeras (`lastCategoryId`, `playerList`) en `localStorage` tras validación; ofrece acción explícita para limpiar datos.
+2. Antes de reiniciar asignaciones, solicita confirmación; elimina solo datos temporales, no categorías personalizadas salvo acción explícita.
+3. Implementa feature flags experimentales vía variables de entorno (`process.env.NEXT_PUBLIC_*`); condiciona cargas sin filtrar datos.
+
+## 5. Pruebas automatizadas
+
+1. Usa `Vitest` + `Testing Library` para cubrir lógica de asignación, hooks y sanitización; crea fixtures deterministas con `seedrandom`.
+2. Documenta casos borde: 4 jugadores exactos, categoría vacía, nombres duplicados, alta/ baja de jugadores durante la ronda.
+3. Ejecuta Storybook en CI y valida accesibilidad (`@storybook/addon-a11y`); agrega pruebas de regresión visual cuando corresponda.
+4. Planifica E2E con `Playwright` para flujo completo en mobile simulando: configurar partida → revelar roles → iniciar siguiente ronda.
