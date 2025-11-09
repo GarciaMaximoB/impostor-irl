@@ -4,10 +4,10 @@ import type { Player } from "@/lib/game/types";
 import type { Category } from "@/lib/categories/types";
 
 const samplePlayers: Player[] = [
-  { id: "1", name: "Ana" },
-  { id: "2", name: "Luis" },
-  { id: "3", name: "María" },
-  { id: "4", name: "Diego" },
+  { id: "1", name: "Ana", order: 0 },
+  { id: "2", name: "Luis", order: 1 },
+  { id: "3", name: "María", order: 2 },
+  { id: "4", name: "Diego", order: 3 },
 ];
 
 const sampleCategory: Category = {

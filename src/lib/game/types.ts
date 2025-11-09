@@ -1,13 +1,12 @@
+import type { Player } from "@/lib/players/types";
+
+export type { Player };
+
 export type GameSessionStatus = "idle" | "ready" | "assigning" | "completed";
 
 export interface GameSessionSettings {
   roomName?: string;
   categoryId: string;
-}
-
-export interface Player {
-  id: string;
-  name: string;
 }
 
 export interface GameSessionState {
@@ -22,5 +21,3 @@ export type GameSessionAction =
   | { type: "RESET_SETTINGS" }
   | { type: "SET_STATUS"; payload: GameSessionStatus }
   | { type: "SET_PLAYERS"; payload: Player[] };
-
-
