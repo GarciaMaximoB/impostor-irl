@@ -1,65 +1,164 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ConfigurationForm } from "@/app/(components)/ConfigurationForm";
+import {
+  GameSessionProvider,
+  useGameSessionDispatch,
+  useGameSessionState,
+} from "@/app/(components)/game-session-provider";
+import { PlayersSummaryCard } from "@/app/(components)/players-summary-card";
+import { CATEGORY_CATALOG, getCategoryById } from "@/lib/categories/catalog";
+import { assignRolesGuard } from "@/lib/game/assign-roles-guard";
+import { MINIMUM_PLAYERS } from "@/lib/game/session";
+import type { GameSessionSettings } from "@/lib/game/types";
+import { loadPlayers } from "@/lib/storage/players";
+import { usePersistedSettings } from "@/lib/storage/use-persisted-settings";
+
+function ConfigurationPage() {
+  const { settings, players, status } = useGameSessionState();
+  const dispatch = useGameSessionDispatch();
+  const [guardError, setGuardError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [highContrast, setHighContrast] = useState(false);
+
+  const handleRestore = useCallback(
+    (restoredSettings: GameSessionSettings) => {
+      dispatch({ type: "RESTORE_SETTINGS", payload: restoredSettings });
+    },
+    [dispatch],
+  );
+
+  const { persist } = usePersistedSettings({ onRestore: handleRestore });
+
+  useEffect(() => {
+    const restoredPlayers = loadPlayers();
+    if (Array.isArray(restoredPlayers) && restoredPlayers.length > 0) {
+      dispatch({ type: "SET_PLAYERS", payload: restoredPlayers });
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    document.documentElement.classList.toggle("high-contrast", highContrast);
+  }, [highContrast]);
+
+  const handleSubmit = useCallback(
+    (nextSettings: GameSessionSettings) => {
+      setIsSubmitting(true);
+      setSuccessMessage(null);
+
+      const category = getCategoryById(nextSettings.categoryId);
+      const result = assignRolesGuard({ players, category });
+
+      if (!result.success) {
+        setGuardError(result.error.message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      dispatch({ type: "SET_SETTINGS", payload: nextSettings });
+      dispatch({ type: "SET_STATUS", payload: "ready" });
+      persist(nextSettings);
+      setGuardError(null);
+      setSuccessMessage(
+        "Configuración lista. Avanza a la asignación de roles cuando estés listo.",
+      );
+      setIsSubmitting(false);
+    },
+    [dispatch, persist, players],
+  );
+
+  const defaultSettings = useMemo(() => settings, [settings]);
+  const formKey = useMemo(
+    () => `${defaultSettings.categoryId}-${defaultSettings.roomName ?? "empty"}`,
+    [defaultSettings.categoryId, defaultSettings.roomName],
+  );
+
+  const categoryCount = CATEGORY_CATALOG.length;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 via-white to-white pb-16 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <header className="bg-transparent">
+        <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-10 sm:px-8">
+          <span className="inline-flex w-fit items-center rounded-full bg-slate-900/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:bg-white/10 dark:text-slate-200">
+            Pantalla 01 · Configuración de partida
+          </span>
+          <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl dark:text-white">
+            Personaliza tu partida y confirma las condiciones antes de asignar roles.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300">
+            Selecciona la categoría de palabras, revisa la disponibilidad de jugadores y asegúrate de cumplir las reglas antes de pasar el dispositivo.
           </p>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center gap-2 rounded-full bg-white/60 px-3 py-2 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900/60 dark:ring-slate-800">
+              <span className="font-semibold text-slate-800 dark:text-white">
+                {MINIMUM_PLAYERS}+
+              </span>
+              Jugadores requeridos
+            </div>
+            <div className="flex items-center gap-2 rounded-full bg-white/60 px-3 py-2 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900/60 dark:ring-slate-800">
+              <span className="font-semibold text-slate-800 dark:text-white">
+                {categoryCount}
+              </span>
+              Categorías disponibles
+            </div>
+            <div className="flex items-center gap-2 rounded-full bg-white/60 px-3 py-2 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900/60 dark:ring-slate-800">
+              Estado:{" "}
+              <span className="font-semibold capitalize text-slate-800 dark:text-white">
+                {status === "idle" ? "sin configurar" : status}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <main className="mx-auto grid w-full max-w-5xl gap-8 px-4 sm:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] sm:px-8">
+        <ConfigurationForm
+          key={formKey}
+          categories={CATEGORY_CATALOG}
+          defaultValue={defaultSettings}
+          busy={isSubmitting}
+          errorMessage={guardError ?? undefined}
+          onSubmit={handleSubmit}
+          onHighContrastToggle={setHighContrast}
+        />
+        <div className="space-y-6">
+          <PlayersSummaryCard players={players} />
+          {successMessage && (
+            <div className="rounded-2xl border border-emerald-400 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 shadow-sm dark:border-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-300">
+              {successMessage}
+            </div>
+          )}
+          <aside className="rounded-2xl border border-slate-200 bg-white/70 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-white">
+              Próximos pasos
+            </h2>
+            <p className="mt-2">
+              Cuando la configuración esté lista, avanza a la pantalla de
+              asignación de roles. Puedes regresar a editar la configuración en cualquier momento antes de revelar la palabra.
+            </p>
+            <a
+              href="/categories"
+              className="mt-4 inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+            >
+              Administrar categorías
+            </a>
+          </aside>
         </div>
       </main>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <GameSessionProvider>
+      <ConfigurationPage />
+    </GameSessionProvider>
   );
 }
