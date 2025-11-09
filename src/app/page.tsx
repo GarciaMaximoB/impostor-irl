@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigurationForm } from "@/app/(components)/ConfigurationForm";
 import {
-  GameSessionProvider,
   useGameSessionDispatch,
   useGameSessionState,
 } from "@/app/(components)/game-session-provider";
@@ -27,7 +26,7 @@ function ConfigurationPage() {
     (restoredSettings: GameSessionSettings) => {
       dispatch({ type: "RESTORE_SETTINGS", payload: restoredSettings });
     },
-    [dispatch],
+    [dispatch]
   );
 
   const { persist } = usePersistedSettings({ onRestore: handleRestore });
@@ -66,17 +65,18 @@ function ConfigurationPage() {
       persist(nextSettings);
       setGuardError(null);
       setSuccessMessage(
-        "Configuración lista. Avanza a la asignación de roles cuando estés listo.",
+        "Configuración lista. Avanza a la asignación de roles cuando estés listo."
       );
       setIsSubmitting(false);
     },
-    [dispatch, persist, players],
+    [dispatch, persist, players]
   );
 
   const defaultSettings = useMemo(() => settings, [settings]);
   const formKey = useMemo(
-    () => `${defaultSettings.categoryId}-${defaultSettings.roomName ?? "empty"}`,
-    [defaultSettings.categoryId, defaultSettings.roomName],
+    () =>
+      `${defaultSettings.categoryId}-${defaultSettings.roomName ?? "empty"}`,
+    [defaultSettings.categoryId, defaultSettings.roomName]
   );
 
   const categoryCount = CATEGORY_CATALOG.length;
@@ -89,10 +89,13 @@ function ConfigurationPage() {
             Pantalla 01 · Configuración de partida
           </span>
           <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl dark:text-white">
-            Personaliza tu partida y confirma las condiciones antes de asignar roles.
+            Personaliza tu partida y confirma las condiciones antes de asignar
+            roles.
           </h1>
           <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300">
-            Selecciona la categoría de palabras, revisa la disponibilidad de jugadores y asegúrate de cumplir las reglas antes de pasar el dispositivo.
+            Selecciona la categoría de palabras, revisa la disponibilidad de
+            jugadores y asegúrate de cumplir las reglas antes de pasar el
+            dispositivo.
           </p>
           <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-2 rounded-full bg-white/60 px-3 py-2 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900/60 dark:ring-slate-800">
@@ -140,7 +143,8 @@ function ConfigurationPage() {
             </h2>
             <p className="mt-2">
               Cuando la configuración esté lista, avanza a la pantalla de
-              asignación de roles. Puedes regresar a editar la configuración en cualquier momento antes de revelar la palabra.
+              asignación de roles. Puedes regresar a editar la configuración en
+              cualquier momento antes de revelar la palabra.
             </p>
             <a
               href="/categories"
@@ -156,9 +160,5 @@ function ConfigurationPage() {
 }
 
 export default function Page() {
-  return (
-    <GameSessionProvider>
-      <ConfigurationPage />
-    </GameSessionProvider>
-  );
+  return <ConfigurationPage />;
 }
