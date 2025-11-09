@@ -1,0 +1,28 @@
+{
+  "id": "futbolistas-argentinos-reconocidos",
+  "name": "Futbolistas argentinos (reconocidos)",
+  "description": "Jugadores argentinos de fútbol ampliamente reconocidos.",
+  "locale": "es-AR",
+  "words": [
+    "Lionel Messi",
+    "Diego Maradona",
+    "Juan Román Riquelme",
+    "Sergio Agüero",
+    "Ángel Di María",
+    "Gabriel Batistuta",
+    "Javier Zanetti",
+    "Carlos Tevez",
+    "Hernán Crespo",
+    "Pablo Aimar",
+    "Fernando Redondo",
+    "Ariel Ortega",
+    "Juan Sebastián Verón",
+    "Gonzalo Higuaín",
+    "Emiliano Martínez",
+    "Rodrigo De Paul",
+    "Javier Mascherano",
+    "Enzo Fernández",
+    "Lautaro Martínez",
+    "Lisandro Martínez"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "famosos-internacionales",
+  "name": "Famosos internacionales",
+  "description": "Celebridades ampliamente reconocidas a nivel mundial.",
+  "locale": "es-ES",
+  "words": [
+    "Beyoncé",
+    "Taylor Swift",
+    "Brad Pitt",
+    "Angelina Jolie",
+    "Tom Cruise",
+    "Ariana Grande",
+    "Oprah Winfrey",
+    "Dwayne Johnson",
+    "Kim Kardashian",
+    "Rihanna",
+    "Chris Hemsworth",
+    "Keanu Reeves",
+    "Billie Eilish",
+    "Zendaya",
+    "Leonardo DiCaprio",
+    "Jennifer Lopez",
+    "Lady Gaga",
+    "Shakira",
+    "Ed Sheeran",
+    "Elon Musk"
+  ]
+}

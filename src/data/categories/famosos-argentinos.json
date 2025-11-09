@@ -1,0 +1,28 @@
+{
+  "id": "famosos-argentinos",
+  "name": "Famosos argentinos",
+  "description": "Celebridades y figuras públicas reconocidas de Argentina.",
+  "locale": "es-AR",
+  "words": [
+    "Ricardo Darín",
+    "Susana Giménez",
+    "Mirtha Legrand",
+    "Charly García",
+    "Fito Páez",
+    "Lali Espósito",
+    "Tini Stoessel",
+    "Soledad Pastorutti",
+    "Abel Pintos",
+    "Marcelo Tinelli",
+    "Adrián Suar",
+    "Santiago del Moro",
+    "Diego Torres",
+    "Luisana Lopilato",
+    "Florencia Peña",
+    "Carla Peterson",
+    "Guillermo Francella",
+    "Valeria Lynch",
+    "Pampita Ardohain",
+    "Wanda Nara"
+  ]
+}

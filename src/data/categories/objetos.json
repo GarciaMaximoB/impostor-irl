@@ -1,0 +1,28 @@
+{
+  "id": "objetos",
+  "name": "Objetos",
+  "description": "Objetos cotidianos y fácilmente identificables.",
+  "locale": "es-AR",
+  "words": [
+    "Teléfono móvil",
+    "Libro",
+    "Lámpara",
+    "Computadora portátil",
+    "Botella de agua",
+    "Mesa",
+    "Silla",
+    "Auriculares",
+    "Reloj de pulsera",
+    "Mochila",
+    "Cámara fotográfica",
+    "Bicicleta",
+    "Paraguas",
+    "Guitarra",
+    "Televisor",
+    "Licuadora",
+    "Cafetera",
+    "Cuchara",
+    "Almohada",
+    "Ventilador"
+  ]
+}

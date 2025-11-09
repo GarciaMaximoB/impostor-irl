@@ -1,0 +1,28 @@
+{
+  "id": "futbolistas-internacionales-reconocidos",
+  "name": "Futbolistas internacionales (reconocidos)",
+  "description": "Jugadores de fútbol destacados de distintas nacionalidades.",
+  "locale": "es-ES",
+  "words": [
+    "Cristiano Ronaldo",
+    "Neymar Jr.",
+    "Kylian Mbappé",
+    "Erling Haaland",
+    "Robert Lewandowski",
+    "Luka Modrić",
+    "Mohamed Salah",
+    "Kevin De Bruyne",
+    "Harry Kane",
+    "Virgil van Dijk",
+    "Karim Benzema",
+    "Sadio Mané",
+    "Andrés Iniesta",
+    "Xavi Hernández",
+    "Zinedine Zidane",
+    "Ronaldinho",
+    "Francesco Totti",
+    "Andrea Pirlo",
+    "Paolo Maldini",
+    "Thierry Henry"
+  ]
+}
