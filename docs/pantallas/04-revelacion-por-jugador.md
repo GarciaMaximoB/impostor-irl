@@ -68,3 +68,4 @@
   - Reinicio tras cancelar.
 - Garantizar que el componente se marque como `use client` y utilice `Framer Motion` para transiciones suaves entre jugadores (respetando performance).
 
+

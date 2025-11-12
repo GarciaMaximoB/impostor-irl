@@ -63,3 +63,4 @@
 - Asegurar que `Siguiente ronda` no persista palabra ni impostor previos.
 - Tests: validar que el flujo de `Siguiente ronda` reusa jugadores y categoría, y que `currentAssignment` se limpia.
 
+

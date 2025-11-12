@@ -63,3 +63,4 @@
 - Probar reducer con `Vitest` incluyendo casos de duplicados y reordenamiento.
 - Asegurar que el estado se sincroniza antes de desmontar el componente (efecto `useEffect` con dependencias estables).
 
+
