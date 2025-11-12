@@ -1,5 +1,8 @@
 import type {
+  AssignmentHistoryEntry,
+  AssignmentState,
   GameSessionAction,
+  GameSessionAssignment,
   GameSessionSettings,
   GameSessionState,
   GameSessionStatus,
@@ -8,12 +11,19 @@ import type {
 
 export const MINIMUM_PLAYERS = 4;
 
+const emptyAssignmentState: GameSessionAssignment = {
+  current: null,
+  history: [],
+  rerolls: 0,
+};
+
 export const initialGameSessionState: GameSessionState = Object.freeze({
   settings: {
     categoryId: "",
   },
   players: [],
   status: "idle" as GameSessionStatus,
+  assignment: emptyAssignmentState,
 });
 
 export function gameSessionReducer(
@@ -25,18 +35,23 @@ export function gameSessionReducer(
       return {
         ...state,
         settings: { ...action.payload },
+        assignment: createEmptyAssignmentState(),
       };
     case "RESTORE_SETTINGS":
       return {
         ...state,
         settings: { ...action.payload },
         status: state.status === "idle" ? "idle" : state.status,
+        assignment: state.assignment.current
+          ? state.assignment
+          : createEmptyAssignmentState(),
       };
     case "RESET_SETTINGS":
       return {
         ...state,
         settings: { ...initialGameSessionState.settings },
         status: "idle",
+        assignment: createEmptyAssignmentState(),
       };
     case "SET_STATUS":
       return {
@@ -47,6 +62,43 @@ export function gameSessionReducer(
       return {
         ...state,
         players: action.payload.map(clonePlayer),
+        assignment: createEmptyAssignmentState(),
+      };
+    case "SET_ASSIGNMENT": {
+      const { assignment, mode } = action.payload;
+      const history =
+        mode === "initial"
+          ? [
+              createHistoryEntry({
+                assignment,
+                attempt: 0,
+              }),
+            ]
+          : [
+              ...state.assignment.history,
+              createHistoryEntry({
+                assignment,
+                attempt: state.assignment.history.length,
+              }),
+            ];
+
+      const rerolls = Math.max(0, history.length - 1);
+
+      return {
+        ...state,
+        status: "assigning",
+        assignment: {
+          current: cloneAssignment(assignment),
+          history,
+          rerolls,
+        },
+      };
+    }
+    case "RESET_ASSIGNMENT":
+      return {
+        ...state,
+        assignment: createEmptyAssignmentState(),
+        status: state.status === "assigning" ? "ready" : state.status,
       };
     default:
       return state;
@@ -56,6 +108,36 @@ export function gameSessionReducer(
 function clonePlayer(player: Player): Player {
   return {
     ...player,
+  };
+}
+
+function createEmptyAssignmentState(): GameSessionAssignment {
+  return {
+    current: null,
+    history: [],
+    rerolls: 0,
+  };
+}
+
+function cloneAssignment(assignment: AssignmentState): AssignmentState {
+  return {
+    word: assignment.word,
+    impostorId: assignment.impostorId,
+    revealOrder: [...assignment.revealOrder],
+    timestamp: assignment.timestamp,
+  };
+}
+
+function createHistoryEntry({
+  assignment,
+  attempt,
+}: {
+  assignment: AssignmentState;
+  attempt: number;
+}): AssignmentHistoryEntry {
+  return {
+    ...cloneAssignment(assignment),
+    attempt,
   };
 }
 

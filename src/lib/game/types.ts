@@ -9,10 +9,28 @@ export interface GameSessionSettings {
   categoryId: string;
 }
 
+export interface AssignmentState {
+  word: string;
+  impostorId: Player["id"];
+  revealOrder: Player["id"][];
+  timestamp: number;
+}
+
+export interface AssignmentHistoryEntry extends AssignmentState {
+  attempt: number;
+}
+
+export interface GameSessionAssignment {
+  current: AssignmentState | null;
+  history: AssignmentHistoryEntry[];
+  rerolls: number;
+}
+
 export interface GameSessionState {
   settings: GameSessionSettings;
   players: Player[];
   status: GameSessionStatus;
+  assignment: GameSessionAssignment;
 }
 
 export type GameSessionAction =
@@ -20,4 +38,9 @@ export type GameSessionAction =
   | { type: "RESTORE_SETTINGS"; payload: GameSessionSettings }
   | { type: "RESET_SETTINGS" }
   | { type: "SET_STATUS"; payload: GameSessionStatus }
-  | { type: "SET_PLAYERS"; payload: Player[] };
+  | { type: "SET_PLAYERS"; payload: Player[] }
+  | {
+      type: "SET_ASSIGNMENT";
+      payload: { assignment: AssignmentState; mode: "initial" | "reroll" };
+    }
+  | { type: "RESET_ASSIGNMENT" };
