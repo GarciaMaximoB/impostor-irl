@@ -127,3 +127,4 @@ function warningMessage(totalPlayers: number, hasDuplicates: boolean): string {
   return "Revisa la lista de jugadores antes de continuar.";
 }
 
+

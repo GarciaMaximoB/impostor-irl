@@ -21,3 +21,4 @@ export function getCategoryById(id: string | undefined): Category | undefined {
   return CATEGORY_CATALOG.find((category) => category.id === id);
 }
 
+
