@@ -39,15 +39,16 @@ export default function PlayersPage() {
     }
     const stored = loadPlayers();
     if (Array.isArray(stored) && stored.length > 0) {
-      setSeedPlayers(stored);
+      // Usar setTimeout para evitar setState síncrono en efecto
+      setTimeout(() => setSeedPlayers(stored), 0);
       return;
     }
-    setSeedPlayers(sessionPlayers);
+    setTimeout(() => setSeedPlayers(sessionPlayers), 0);
   }, [seedPlayers, sessionPlayers]);
 
   const initialPlayers = useMemo(
     () => seedPlayers ?? sessionPlayers,
-    [seedPlayers, sessionPlayers],
+    [seedPlayers, sessionPlayers]
   );
 
   const [players, dispatchPlayers, meta] = usePlayers({
@@ -100,7 +101,7 @@ export default function PlayersPage() {
       const normalized = sanitized.toLowerCase();
       const duplicate = players.find(
         (player) =>
-          player.id !== currentId && player.name.toLowerCase() === normalized,
+          player.id !== currentId && player.name.toLowerCase() === normalized
       );
       if (duplicate) {
         return {
@@ -110,7 +111,7 @@ export default function PlayersPage() {
       }
       return { success: true, value: sanitized };
     },
-    [players],
+    [players]
   );
 
   const handleAddPlayer = useCallback(
@@ -122,7 +123,7 @@ export default function PlayersPage() {
       });
       setStatusMessage(`Se agregó a ${name}.`);
     },
-    [dispatchPlayers, players.length],
+    [dispatchPlayers, players.length]
   );
 
   const handleUpdatePlayer = useCallback(
@@ -133,7 +134,7 @@ export default function PlayersPage() {
       });
       setStatusMessage(`Se actualizó a ${name}.`);
     },
-    [dispatchPlayers],
+    [dispatchPlayers]
   );
 
   const handleRequestRemoval = useCallback((player: Player) => {
@@ -167,10 +168,10 @@ export default function PlayersPage() {
         payload: { from: currentIndex, to: currentIndex - 1 },
       });
       setStatusMessage(
-        `${player.name} ahora está en la posición ${currentIndex}.`,
+        `${player.name} ahora está en la posición ${currentIndex}.`
       );
     },
-    [dispatchPlayers, players],
+    [dispatchPlayers, players]
   );
 
   const handleMoveDown = useCallback(
@@ -184,10 +185,10 @@ export default function PlayersPage() {
         payload: { from: currentIndex, to: currentIndex + 1 },
       });
       setStatusMessage(
-        `${player.name} ahora está en la posición ${currentIndex + 2}.`,
+        `${player.name} ahora está en la posición ${currentIndex + 2}.`
       );
     },
-    [dispatchPlayers, players],
+    [dispatchPlayers, players]
   );
 
   const handleRequestClear = useCallback(() => {
@@ -206,7 +207,6 @@ export default function PlayersPage() {
   const handleCancelClear = useCallback(() => {
     setConfirmClear(false);
   }, []);
-
 
   const duplicatesSummary = useMemo(() => {
     if (duplicateNames.length === 0) {
@@ -285,12 +285,7 @@ export default function PlayersPage() {
         </aside>
       </main>
 
-
-      <div
-        aria-live="polite"
-        className="sr-only"
-        role="status"
-      >
+      <div aria-live="polite" className="sr-only" role="status">
         {statusMessage}
       </div>
 
@@ -320,5 +315,3 @@ export default function PlayersPage() {
     </div>
   );
 }
-
-

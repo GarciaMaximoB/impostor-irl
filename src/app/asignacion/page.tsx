@@ -86,17 +86,19 @@ export default function AssignmentPage() {
     }
   }, [category, dispatch, players]);
 
+  const assignmentData = assignment.current;
+  
   useEffect(() => {
     if (
       guardResult.success &&
-      !assignment.current &&
+      !assignmentData &&
       !isGenerating &&
       players.length >= MINIMUM_PLAYERS
     ) {
       generateAssignment();
     }
   }, [
-    assignment.current,
+    assignmentData,
     generateAssignment,
     guardResult.success,
     isGenerating,
@@ -104,12 +106,12 @@ export default function AssignmentPage() {
   ]);
 
   const handleStartReveal = useCallback(() => {
-    if (!assignment.current) {
+    if (!assignmentData) {
       setErrorMessage("Genera la asignación antes de comenzar la revelación.");
       return;
     }
     router.push("/revelacion");
-  }, [assignment.current, router]);
+  }, [assignmentData, router]);
 
   const handleReroll = useCallback(() => {
     if (!category) {
@@ -183,9 +185,9 @@ export default function AssignmentPage() {
 
       <main className="mx-auto grid w-full max-w-5xl gap-8 px-4 md:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] md:px-8">
         <div className="space-y-6">
-          {guardResult.success && assignment.current ? (
+          {guardResult.success && assignmentData ? (
             <AssignmentSummary
-              assignment={assignment.current}
+              assignment={assignmentData}
               players={players}
               categoryName={category?.name ?? "Sin categoría"}
               roomName={settings.roomName}

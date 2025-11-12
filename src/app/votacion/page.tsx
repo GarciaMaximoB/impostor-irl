@@ -36,31 +36,32 @@ export default function VotingPage() {
 
   const activePlayers = useMemo(() => getActivePlayers(players), [players]);
 
+  const assignmentData = assignment.current;
+  
   useEffect(() => {
-    if (!assignment.current) {
+    if (!assignmentData) {
       router.replace("/asignacion");
       return;
     }
     dispatch({ type: "SET_STATUS", payload: "voting" });
-    // Resetear el estado de la pantalla cuando se vuelve a la votación
-    setScreenState({ type: "voting" });
-  }, [assignment.current, router, dispatch]);
+    // Usar setTimeout para evitar setState síncrono en efecto
+    setTimeout(() => {
+      setScreenState({ type: "voting" });
+    }, 0);
+  }, [assignmentData, router, dispatch]);
 
-  const handlePlayerClick = useCallback(
-    (player: Player) => {
-      setPendingElimination(player);
-    },
-    [],
-  );
+  const handlePlayerClick = useCallback((player: Player) => {
+    setPendingElimination(player);
+  }, []);
 
   const handleConfirmElimination = useCallback(() => {
-    if (!pendingElimination || !assignment.current) {
+    if (!pendingElimination || !assignmentData) {
       setPendingElimination(null);
       return;
     }
 
     const playerId = pendingElimination.id;
-    const impostorId = assignment.current.impostorId;
+    const impostorId = assignmentData.impostorId;
 
     // Eliminar al jugador
     dispatch({ type: "ELIMINATE_PLAYER", payload: { playerId } });
@@ -90,7 +91,7 @@ export default function VotingPage() {
     }
 
     setPendingElimination(null);
-  }, [pendingElimination, assignment.current, players, dispatch]);
+  }, [pendingElimination, assignmentData, players, dispatch]);
 
   const handleCancelElimination = useCallback(() => {
     setPendingElimination(null);
@@ -143,7 +144,7 @@ export default function VotingPage() {
     }
   }, [dispatch, router, players, settings.categoryId]);
 
-  if (!assignment.current) {
+  if (!assignmentData) {
     return null;
   }
 

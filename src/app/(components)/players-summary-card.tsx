@@ -77,7 +77,7 @@ export const PlayersSummaryCard = memo(function PlayersSummaryCard({
             {duplicateNames.length > 0 && (
               <ul className="mt-1 list-disc space-y-1 pl-5 text-xs">
                 {duplicateNames.map((name) => (
-                  <li key={name}>Hay más de un jugador llamado "{name}".</li>
+                  <li key={name}>Hay más de un jugador llamado &quot;{name}&quot;.</li>
                 ))}
               </ul>
             )}

@@ -76,7 +76,11 @@ export function useRevelationState(
   }, []);
 
   useEffect(() => {
-    reset();
+    // Usar setTimeout para evitar setState síncrono en efecto
+    const timer = setTimeout(() => {
+      reset();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [assignment?.timestamp, reset]);
 
   return {

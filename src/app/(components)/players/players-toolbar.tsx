@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { MINIMUM_PLAYERS } from "@/lib/game/session";
 
 interface PlayersToolbarProps {
   total: number;
@@ -14,7 +13,6 @@ interface PlayersToolbarProps {
 export function PlayersToolbar({
   total,
   duplicateNames,
-  hasMinimumPlayers,
   onClear,
   disableClear = false,
 }: PlayersToolbarProps) {

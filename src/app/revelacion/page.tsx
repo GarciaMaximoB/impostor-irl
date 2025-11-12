@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,6 +18,7 @@ export default function RevelationPage() {
 
   const [showBackConfirm, setShowBackConfirm] = useState(false);
   const [announcement, setAnnouncement] = useState<string | null>(null);
+  const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const revelation = useRevelationState(assignment.current);
   const { phase } = revelation.state;
@@ -34,12 +35,13 @@ export default function RevelationPage() {
     return playersById.get(revelation.currentPlayerId) ?? null;
   }, [revelation.currentPlayerId, playersById]);
 
+  const assignmentData = assignment.current;
   const isImpostor = useMemo(() => {
-    if (!assignment.current || !revelation.currentPlayerId) {
+    if (!assignmentData || !revelation.currentPlayerId) {
       return false;
     }
-    return assignment.current.impostorId === revelation.currentPlayerId;
-  }, [assignment.current, revelation.currentPlayerId]);
+    return assignmentData.impostorId === revelation.currentPlayerId;
+  }, [assignmentData, revelation.currentPlayerId]);
 
   const handleStartReveal = useCallback(() => {
     if (!currentPlayer) {
@@ -57,7 +59,7 @@ export default function RevelationPage() {
   }, []);
 
   useEffect(() => {
-    if (!assignment.current) {
+    if (!assignmentData) {
       router.replace("/asignacion");
       return;
     }
@@ -67,24 +69,39 @@ export default function RevelationPage() {
       return;
     }
   }, [
-    assignment.current,
+    assignmentData,
     revelation.state.currentIndex,
     revelation.totalPlayers,
     router,
   ]);
 
   useEffect(() => {
-    if (currentPlayer) {
-      const phaseMessage =
-        phase === "handoff"
-          ? `Turno de ${currentPlayer.name}. Pasa el dispositivo.`
-          : `Mostrando rol de ${currentPlayer.name}.`;
-      setAnnouncement(phaseMessage);
-      const timer = setTimeout(() => {
-        setAnnouncement(null);
-      }, 2000);
-      return () => clearTimeout(timer);
+    if (!currentPlayer) {
+      return;
     }
+    const phaseMessage =
+      phase === "handoff"
+        ? `Turno de ${currentPlayer.name}. Pasa el dispositivo.`
+        : `Mostrando rol de ${currentPlayer.name}.`;
+    // Usar setTimeout para evitar setState síncrono en efecto
+    const timer = setTimeout(() => {
+      setAnnouncement(phaseMessage);
+      // Limpiar timer anterior si existe
+      if (clearTimerRef.current) {
+        clearTimeout(clearTimerRef.current);
+      }
+      clearTimerRef.current = setTimeout(() => {
+        setAnnouncement(null);
+        clearTimerRef.current = null;
+      }, 2000);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      if (clearTimerRef.current) {
+        clearTimeout(clearTimerRef.current);
+        clearTimerRef.current = null;
+      }
+    };
   }, [currentPlayer, phase]);
 
   useEffect(() => {
@@ -261,7 +278,7 @@ export default function RevelationPage() {
             >
               <RoleCard
                 player={currentPlayer}
-                word={assignment.current.word}
+                word={assignmentData?.word ?? ""}
                 isImpostor={isImpostor}
               />
             </motion.div>
