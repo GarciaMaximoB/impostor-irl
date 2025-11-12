@@ -119,13 +119,6 @@ export default function AssignmentPage() {
       return;
     }
 
-    if (assignment.rerolls >= 3) {
-      setErrorMessage(
-        "Has alcanzado el máximo de resorteos recomendados. Revisa la configuración si necesitas cambiar datos."
-      );
-      return;
-    }
-
     setIsGenerating(true);
     setErrorMessage(null);
 
@@ -152,7 +145,7 @@ export default function AssignmentPage() {
     } finally {
       setIsGenerating(false);
     }
-  }, [category, dispatch, players, assignment.rerolls]);
+  }, [category, dispatch, players]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-100 via-white to-white pb-24 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -226,7 +219,6 @@ export default function AssignmentPage() {
             onReroll={handleReroll}
             infoMessage={infoMessage}
             rerolls={assignment.rerolls}
-            maxRerolls={3}
           />
         </aside>
       </main>

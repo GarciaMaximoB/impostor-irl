@@ -14,7 +14,7 @@ export const PlayersSummaryCard = memo(function PlayersSummaryCard({
 }: PlayersSummaryCardProps) {
   const totalPlayers = players.length;
   const duplicateNames = findDuplicateNames(players);
-  const hasWarnings = totalPlayers < MINIMUM_PLAYERS || duplicateNames.length > 0;
+  const hasWarnings = duplicateNames.length > 0;
 
   return (
     <section
@@ -33,7 +33,7 @@ export const PlayersSummaryCard = memo(function PlayersSummaryCard({
             Jugadores confirmados
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Necesitas al menos {MINIMUM_PLAYERS} jugadores únicos para iniciar.
+            Se requieren al menos {MINIMUM_PLAYERS} jugadores únicos para iniciar el juego.
           </p>
         </div>
         <span className="inline-flex min-w-[3rem] items-center justify-center rounded-full bg-slate-900 px-2 py-1 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
@@ -77,11 +77,15 @@ export const PlayersSummaryCard = memo(function PlayersSummaryCard({
             {duplicateNames.length > 0 && (
               <ul className="mt-1 list-disc space-y-1 pl-5 text-xs">
                 {duplicateNames.map((name) => (
-                  <li key={name}>Hay más de un jugador llamado “{name}”.</li>
+                  <li key={name}>Hay más de un jugador llamado "{name}".</li>
                 ))}
               </ul>
             )}
           </div>
+        ) : totalPlayers < MINIMUM_PLAYERS ? (
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Agrega más jugadores para llegar a {MINIMUM_PLAYERS} y poder iniciar el juego.
+          </p>
         ) : (
           <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
             Todo listo: tienes suficientes jugadores únicos para iniciar.
@@ -116,10 +120,6 @@ function findDuplicateNames(players: Player[]): string[] {
 }
 
 function warningMessage(totalPlayers: number, hasDuplicates: boolean): string {
-  if (totalPlayers < MINIMUM_PLAYERS) {
-    return "Agrega al menos 4 jugadores únicos para comenzar.";
-  }
-
   if (hasDuplicates) {
     return "Cada jugador debe tener un nombre único.";
   }

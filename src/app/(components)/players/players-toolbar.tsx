@@ -19,7 +19,7 @@ export function PlayersToolbar({
   disableClear = false,
 }: PlayersToolbarProps) {
   const duplicateCount = duplicateNames.length;
-  const hasIssues = !hasMinimumPlayers || duplicateCount > 0;
+  const hasIssues = duplicateCount > 0;
 
   return (
     <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 md:flex-row md:items-center md:justify-between">
@@ -39,10 +39,7 @@ export function PlayersToolbar({
           )}
         >
           {hasIssues
-            ? issuesLabel({
-                hasMinimumPlayers,
-                duplicateCount,
-              })
+            ? issuesLabel(duplicateCount)
             : "Listo para guardar"}
         </p>
       </div>
@@ -58,16 +55,7 @@ export function PlayersToolbar({
   );
 }
 
-function issuesLabel({
-  hasMinimumPlayers,
-  duplicateCount,
-}: {
-  hasMinimumPlayers: boolean;
-  duplicateCount: number;
-}): string {
-  if (!hasMinimumPlayers) {
-    return `Agrega al menos ${MINIMUM_PLAYERS} jugadores.`;
-  }
+function issuesLabel(duplicateCount: number): string {
   if (duplicateCount > 0) {
     return duplicateCount === 1
       ? "Resuelve 1 nombre duplicado."

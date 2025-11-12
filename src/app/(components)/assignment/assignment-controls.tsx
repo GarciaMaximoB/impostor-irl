@@ -5,7 +5,6 @@ interface AssignmentControlsProps {
   onReroll?: () => void;
   infoMessage?: string | null;
   rerolls?: number;
-  maxRerolls?: number;
 }
 
 export function AssignmentControls({
@@ -15,10 +14,8 @@ export function AssignmentControls({
   onReroll,
   infoMessage,
   rerolls = 0,
-  maxRerolls = 3,
 }: AssignmentControlsProps) {
-  const canReroll = onReroll && rerolls < maxRerolls;
-  const hasReachedMaxRerolls = rerolls >= maxRerolls;
+  const canReroll = Boolean(onReroll);
 
   return (
     <section className="space-y-5 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-md backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
@@ -38,20 +35,10 @@ export function AssignmentControls({
         </div>
       )}
 
-      {hasReachedMaxRerolls && (
-        <div
-          role="alert"
-          className="rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 text-sm text-amber-700 dark:border-amber-400/60 dark:bg-amber-500/10 dark:text-amber-200"
-        >
-          Has alcanzado el máximo de resorteos recomendados. Revisa la
-          configuración si necesitas cambiar datos.
-        </div>
-      )}
-
       {rerolls > 0 && (
         <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-800/40 dark:text-slate-300">
           <p>
-            Resorteos realizados: <strong>{rerolls}</strong> de {maxRerolls}
+            Resorteos realizados: <strong>{rerolls}</strong>
           </p>
         </div>
       )}

@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { PlayersToolbar } from "@/app/(components)/players/players-toolbar";
 import { PlayerForm } from "@/app/(components)/players/player-form";
 import { PlayerList } from "@/app/(components)/players/player-list";
@@ -24,16 +23,15 @@ type NameValidationResult =
   | { success: false; error: string };
 
 export default function PlayersPage() {
-  const router = useRouter();
   const { players: sessionPlayers } = useGameSessionState();
   const sessionDispatch = useGameSessionDispatch();
 
   const [seedPlayers, setSeedPlayers] = useState<Player[] | null>(null);
   const [pendingRemoval, setPendingRemoval] = useState<Player | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
-  const [blockingError, setBlockingError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     if (seedPlayers !== null) {
@@ -56,7 +54,37 @@ export default function PlayersPage() {
     initialPlayers,
   });
 
-  const { hasMinimumPlayers, duplicateNames, markAsSaved } = meta;
+  const { hasMinimumPlayers, duplicateNames } = meta;
+
+  // Guardar automáticamente cuando cambien los jugadores
+  useEffect(() => {
+    // No guardar en el primer render (cuando se carga desde storage)
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // Limpiar timeout anterior si existe
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Guardar después de un pequeño delay para evitar guardar en cada tecla
+    saveTimeoutRef.current = setTimeout(() => {
+      try {
+        savePlayers(players);
+        sessionDispatch({ type: "SET_PLAYERS", payload: players });
+      } catch (error) {
+        console.error("Error al guardar jugadores automáticamente:", error);
+      }
+    }, 300);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [players, sessionDispatch]);
 
   const validateName = useCallback(
     (input: string, currentId?: string): NameValidationResult => {
@@ -179,42 +207,6 @@ export default function PlayersPage() {
     setConfirmClear(false);
   }, []);
 
-  const handleSaveAndReturn = useCallback(async () => {
-    setBlockingError(null);
-
-    if (!hasMinimumPlayers) {
-      setBlockingError(
-        `Agrega al menos ${MINIMUM_PLAYERS} jugadores únicos antes de guardar.`,
-      );
-      return;
-    }
-
-    if (duplicateNames.length > 0) {
-      setBlockingError("Resuelve los nombres duplicados antes de continuar.");
-      return;
-    }
-
-    try {
-      setIsSaving(true);
-      savePlayers(players);
-      sessionDispatch({ type: "SET_PLAYERS", payload: players });
-      markAsSaved(players);
-      router.push("/");
-    } catch {
-      setBlockingError(
-        "No pudimos guardar la lista de jugadores. Intenta de nuevo.",
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  }, [
-    duplicateNames,
-    hasMinimumPlayers,
-    markAsSaved,
-    players,
-    router,
-    sessionDispatch,
-  ]);
 
   const duplicatesSummary = useMemo(() => {
     if (duplicateNames.length === 0) {
@@ -237,9 +229,9 @@ export default function PlayersPage() {
             Administra la lista de jugadores antes de iniciar la partida.
           </h1>
           <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300">
-            Agrega, edita y reordena jugadores asegurando nombres únicos y un
-            mínimo de {MINIMUM_PLAYERS} participantes. Guarda los cambios para
-            regresar a la configuración de partida.
+            Agrega, edita y reordena jugadores asegurando nombres únicos. Los
+            cambios se guardan automáticamente. Se requerirán al menos{" "}
+            {MINIMUM_PLAYERS} participantes únicos para iniciar el juego.
           </p>
           <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
             <Link
@@ -262,23 +254,12 @@ export default function PlayersPage() {
             duplicateNames={duplicateNames}
             hasMinimumPlayers={hasMinimumPlayers}
             onClear={handleRequestClear}
-            disableClear={isSaving}
           />
 
           <PlayerForm
             onSubmit={handleAddPlayer}
             validateName={(value) => validateName(value)}
-            disabled={isSaving}
           />
-
-          {blockingError && (
-            <div
-              className="rounded-3xl border border-rose-400 bg-rose-50 px-4 py-3 text-sm text-rose-700 shadow-sm dark:border-rose-500 dark:bg-rose-500/10 dark:text-rose-300"
-              role="alert"
-            >
-              {blockingError}
-            </div>
-          )}
 
           {duplicatesSummary && (
             <div
@@ -301,40 +282,9 @@ export default function PlayersPage() {
 
         <aside className="space-y-5">
           <PlayersSummaryCard players={players} />
-          <section className="rounded-3xl border border-slate-200 bg-white/80 p-5 text-sm text-slate-600 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
-            <h2 className="text-base font-semibold text-slate-900 dark:text-white">
-              Guardar cambios
-            </h2>
-            <p className="mt-2">
-              Verifica que haya al menos {MINIMUM_PLAYERS} jugadores únicos antes
-              de guardar. Los cambios se sincronizan con la configuración de
-              partida y quedan disponibles al volver.
-            </p>
-            <button
-              type="button"
-              onClick={handleSaveAndReturn}
-              disabled={isSaving}
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none dark:bg-white dark:text-slate-900 dark:shadow-white/30 dark:hover:bg-slate-100 dark:focus-visible:outline-white"
-            >
-              {isSaving ? "Guardando..." : "Guardar y volver"}
-            </button>
-            <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
-              Esta acción sobrescribe la lista guardada en el dispositivo.
-            </p>
-          </section>
         </aside>
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-white via-white/95 to-white/60 px-4 py-4 shadow-[0_-20px_60px_-20px_rgba(15,23,42,0.25)] dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-950/70 md:hidden">
-        <button
-          type="button"
-          onClick={handleSaveAndReturn}
-          disabled={isSaving}
-          className="inline-flex w-full items-center justify-center rounded-full bg-slate-900 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none dark:bg-white dark:text-slate-900 dark:shadow-white/30 dark:hover:bg-slate-100 dark:focus-visible:outline-white"
-        >
-          {isSaving ? "Guardando..." : "Guardar y volver"}
-        </button>
-      </div>
 
       <div
         aria-live="polite"

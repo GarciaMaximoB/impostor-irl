@@ -65,8 +65,8 @@ export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
               transition={{ duration: 0.4, delay: 0.4 }}
               className="text-sm text-slate-600 dark:text-slate-400 md:text-base lg:text-lg"
             >
-              No conozcas la palabra secreta. Deberás descubrirla durante el
-              juego.
+              El conocimiento te ha sido ocultado. Tu misión es infiltrarte y
+              descubrir el secreto que todos guardan.
             </motion.p>
           </motion.div>
         ) : (
