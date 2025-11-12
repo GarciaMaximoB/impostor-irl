@@ -2,7 +2,13 @@ import type { Player } from "@/lib/players/types";
 
 export type { Player };
 
-export type GameSessionStatus = "idle" | "ready" | "assigning" | "completed";
+export type GameSessionStatus =
+  | "idle"
+  | "ready"
+  | "assigning"
+  | "completed"
+  | "in-game"
+  | "voting";
 
 export interface GameSessionSettings {
   roomName?: string;
@@ -43,4 +49,6 @@ export type GameSessionAction =
       type: "SET_ASSIGNMENT";
       payload: { assignment: AssignmentState; mode: "initial" | "reroll" };
     }
-  | { type: "RESET_ASSIGNMENT" };
+  | { type: "RESET_ASSIGNMENT" }
+  | { type: "ELIMINATE_PLAYER"; payload: { playerId: Player["id"] } }
+  | { type: "RESET_ELIMINATIONS" };

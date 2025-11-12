@@ -100,6 +100,25 @@ export function gameSessionReducer(
         assignment: createEmptyAssignmentState(),
         status: state.status === "assigning" ? "ready" : state.status,
       };
+    case "ELIMINATE_PLAYER": {
+      const { playerId } = action.payload;
+      return {
+        ...state,
+        players: state.players.map((player) =>
+          player.id === playerId
+            ? { ...player, eliminado: true }
+            : player,
+        ),
+      };
+    }
+    case "RESET_ELIMINATIONS":
+      return {
+        ...state,
+        players: state.players.map((player) => ({
+          ...player,
+          eliminado: false,
+        })),
+      };
     default:
       return state;
   }
