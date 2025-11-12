@@ -1,6 +1,6 @@
 {
   "id": "futbolistas-argentinos-reconocidos",
-  "name": "Futbolistas argentinos (reconocidos)",
+  "name": "Futbolistas argentinos",
   "description": "Jugadores argentinos de fútbol ampliamente reconocidos.",
   "locale": "es-AR",
   "words": [
@@ -23,6 +23,31 @@
     "Javier Mascherano",
     "Enzo Fernández",
     "Lautaro Martínez",
-    "Lisandro Martínez"
+    "Lisandro Martínez",
+    "Alexis Mac Allister",
+    "Julián Álvarez",
+    "Leandro Paredes",
+    "Nicolás Otamendi",
+    "Marcos Acuña",
+    "Nahuel Molina",
+    "Germán Pezzella",
+    "Giovani Lo Celso",
+    "Nicolás Tagliafico",
+    "Ángel Correa",
+    "Paulo Dybala",
+    "Alejandro Garnacho",
+    "Ezequiel Lavezzi",
+    "Oscar Ruggeri",
+    "Claudio Caniggia",
+    "Walter Samuel",
+    "Martín Demichelis",
+    "Facundo Colidio",
+    "Claudio Echeverri",
+    "Franco Mastantuono",
+    "Ezequiel Zeballos",
+    "Thiago Almada",
+    "Alejandro Garnacho",
+    "Valentín Barco",
+    "Sergio Romero"
   ]
 }
