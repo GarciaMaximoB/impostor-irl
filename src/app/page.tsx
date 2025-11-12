@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ConfigurationForm } from "@/app/(components)/ConfigurationForm";
 import {
@@ -21,7 +21,6 @@ function ConfigurationPage() {
   const dispatch = useGameSessionDispatch();
   const [guardError, setGuardError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [highContrast, setHighContrast] = useState(false);
 
   const handleRestore = useCallback(
     (restoredSettings: GameSessionSettings) => {
@@ -38,14 +37,6 @@ function ConfigurationPage() {
       dispatch({ type: "SET_PLAYERS", payload: restoredPlayers });
     }
   }, [dispatch]);
-
-  useEffect(() => {
-    if (typeof document === "undefined") {
-      return;
-    }
-
-    document.documentElement.classList.toggle("high-contrast", highContrast);
-  }, [highContrast]);
 
   const handleSubmit = useCallback(
     (nextSettings: GameSessionSettings) => {
@@ -126,27 +117,8 @@ function ConfigurationPage() {
           busy={isSubmitting}
           errorMessage={guardError ?? undefined}
           onSubmit={handleSubmit}
-          onHighContrastToggle={setHighContrast}
         />
-        <div className="space-y-6">
-          <PlayersSummaryCard players={players} />
-          <aside className="rounded-2xl border border-slate-200 bg-white/70 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
-            <h2 className="text-base font-semibold text-slate-900 dark:text-white">
-              Próximos pasos
-            </h2>
-            <p className="mt-2">
-              Cuando la configuración esté lista, avanza a la pantalla de
-              asignación de roles. Puedes regresar a editar la configuración en
-              cualquier momento antes de revelar la palabra.
-            </p>
-            <a
-              href="/categories"
-              className="mt-4 inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-            >
-              Administrar categorías
-            </a>
-          </aside>
-        </div>
+        <PlayersSummaryCard players={players} />
       </main>
     </div>
   );

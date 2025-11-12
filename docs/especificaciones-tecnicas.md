@@ -21,7 +21,6 @@
   - Paleta dinámica inspirada en luces teatrales (gradientes suaves y sombras volumétricas).
   - Tipografía display personalizada (Google Fonts; combinar sans-serif limpia con variante monoespaciada para UI secundaria).
   - Uso moderado de glassmorphism y neumorfismo plano para destacar tarjetas de palabras.
-- **Modo alto contraste:** toggle que aplica tokens de color validados para accesibilidad.
 
 ## Datos y Contenido
 - **Estructura de categorías/palabras:** archivos `.json` versionados en el repositorio; se cargan estáticamente y se replican al almacenamiento local para edición.

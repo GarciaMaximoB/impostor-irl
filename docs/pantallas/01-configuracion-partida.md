@@ -36,7 +36,7 @@
 ## Componentes Clave
 
 - `ConfigurationForm` (componente cliente, carpeta `src/app/(components)/ConfigurationForm`):
-  - Campos: `TextField` para nombre de sala, `Select` para categoría, `Toggle` para modo alto contraste.
+  - Campos: `TextField` para nombre de sala y `Select` para categoría.
   - Emite `onSubmit(settings)` y dispara validación con `zod` (`settingsSchema`).
 - `PlayersSummaryCard`: muestra total de jugadores, advertencias si <4.
 - `PrimaryCTA` (`Button` primario) etiquetado `Iniciar asignación`.
@@ -61,7 +61,7 @@
 
 - Etiquetas `aria-label` en controles; `FormField` con `aria-describedby` hacia mensajes de error.
 - Focus management al abrir modales (trabajar con `headlessui/Dialog` si se necesita).
-- Modo alto contraste adaptando tokens (ver `docs/especificaciones-tecnicas.md`).
+- Mantener contraste AA en los tokens definidos sin depender de toggles adicionales.
 
 ## Métricas y Telemetría
 

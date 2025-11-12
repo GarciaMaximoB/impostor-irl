@@ -12,7 +12,6 @@ interface ConfigurationFormProps {
   busy?: boolean;
   onSubmit: (settings: GameSessionSettings) => void;
   errorMessage?: string;
-  onHighContrastToggle?: (enabled: boolean) => void;
 }
 
 type FieldErrors = Partial<Record<keyof GameSessionSettings, string>>;
@@ -23,17 +22,14 @@ export function ConfigurationForm({
   busy = false,
   onSubmit,
   errorMessage,
-  onHighContrastToggle,
 }: ConfigurationFormProps) {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [roomName, setRoomName] = useState(defaultValue?.roomName ?? "");
   const [categoryId, setCategoryId] = useState(defaultValue?.categoryId ?? "");
-  const [highContrastEnabled, setHighContrastEnabled] = useState(false);
 
   const formId = useId();
   const roomInputId = `${formId}-room`;
   const categorySelectId = `${formId}-category`;
-  const highContrastToggleId = `${formId}-contrast`;
 
   const categoryOptions = useMemo(
     () =>
@@ -68,14 +64,6 @@ export function ConfigurationForm({
 
     setFieldErrors({});
     onSubmit(parsed.data);
-  };
-
-  const handleHighContrastToggle = () => {
-    setHighContrastEnabled((current) => {
-      const nextValue = !current;
-      onHighContrastToggle?.(nextValue);
-      return nextValue;
-    });
   };
 
   return (
@@ -178,42 +166,6 @@ export function ConfigurationForm({
               </p>
             )}
           </div>
-        </div>
-      </section>
-
-      <section className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-              Modo alto contraste
-            </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Ajusta la paleta para mejorar la visibilidad en entornos
-              luminosos.
-            </p>
-          </div>
-          <button
-            id={highContrastToggleId}
-            type="button"
-            onClick={handleHighContrastToggle}
-            className={clsx(
-              "relative inline-flex h-10 w-16 items-center rounded-full border border-transparent px-1 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900",
-              highContrastEnabled
-                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-            )}
-            aria-pressed={highContrastEnabled}
-            aria-label="Activar modo alto contraste"
-          >
-            <span
-              className={clsx(
-                "inline-flex h-8 w-8 translate-x-0 items-center justify-center rounded-full bg-white text-sm font-semibold text-slate-900 shadow transition dark:bg-slate-900 dark:text-white",
-                highContrastEnabled && "translate-x-8"
-              )}
-            >
-              {highContrastEnabled ? "ON" : "OFF"}
-            </span>
-          </button>
         </div>
       </section>
 
