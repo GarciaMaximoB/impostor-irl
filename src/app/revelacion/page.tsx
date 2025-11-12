@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { useGameSessionState } from "@/app/(components)/game-session-provider";
 import { useRevelationState } from "@/lib/revelation/use-revelation-state";
 import { RoleCard } from "@/app/(components)/revelation/role-card";
@@ -189,7 +190,12 @@ export default function RevelationPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-100 via-white to-white px-4 py-8 text-center dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-100 via-white to-white px-4 py-8 text-center dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+    >
       <div
         className="sr-only"
         role="status"
@@ -199,7 +205,12 @@ export default function RevelationPage() {
         {announcement}
       </div>
 
-      <header className="mb-8 w-full max-w-2xl">
+      <motion.header
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="mb-8 w-full max-w-2xl"
+      >
         <div className="flex items-center justify-between">
           <Link
             href="/asignacion"
@@ -212,35 +223,69 @@ export default function RevelationPage() {
             ← Volver a resumen
           </Link>
         </div>
-      </header>
+      </motion.header>
 
       <main className="flex w-full max-w-4xl flex-col items-center gap-8">
-        <PlayerStepper
-          currentIndex={revelation.state.currentIndex}
-          totalPlayers={revelation.totalPlayers}
-          progress={revelation.progress}
-        />
+        <motion.div
+          key={`stepper-${revelation.state.currentIndex}`}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <PlayerStepper
+            currentIndex={revelation.state.currentIndex}
+            totalPlayers={revelation.totalPlayers}
+            progress={revelation.progress}
+          />
+        </motion.div>
 
-        {phase === "handoff" ? (
-          <HandoffScreen
-            playerName={currentPlayer.name}
-            onReady={handleStartReveal}
-          />
-        ) : (
-          <RoleCard
-            player={currentPlayer}
-            word={assignment.current.word}
-            isImpostor={isImpostor}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          {phase === "handoff" ? (
+            <motion.div
+              key="handoff"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <HandoffScreen
+                playerName={currentPlayer.name}
+                onReady={handleStartReveal}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="reveal"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <RoleCard
+                player={currentPlayer}
+                word={assignment.current.word}
+                isImpostor={isImpostor}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {phase === "reveal" ? (
-          <ActionFooter
-            onComplete={handleCompleteReveal}
-            onShowAgain={revelation.showAgain}
-            isLastPlayer={revelation.isLastPlayer}
-          />
-        ) : null}
+        <AnimatePresence>
+          {phase === "reveal" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <ActionFooter
+                onComplete={handleCompleteReveal}
+                onShowAgain={revelation.showAgain}
+                isLastPlayer={revelation.isLastPlayer}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <DialogConfirm
@@ -252,6 +297,6 @@ export default function RevelationPage() {
         onConfirm={handleConfirmBack}
         onCancel={handleCancelBack}
       />
-    </div>
+    </motion.div>
   );
 }

@@ -348,11 +348,11 @@ export default function PlayersPage() {
         open={Boolean(pendingRemoval)}
         title={
           pendingRemoval
-            ? `¿Eliminar a ${pendingRemoval.name}?`
-            : "¿Eliminar jugador?"
+            ? `¿Desterrar a ${pendingRemoval.name} del juego?`
+            : "¿Desterrar jugador?"
         }
-        description="Esta acción no se puede deshacer."
-        confirmLabel="Eliminar"
+        description="¡Cuidado! Una vez que lo hagas, no habrá vuelta atrás... La magia del juego lo borrará para siempre."
+        confirmLabel="Desterrar"
         cancelLabel="Cancelar"
         onConfirm={handleConfirmRemoval}
         onCancel={handleCancelRemoval}

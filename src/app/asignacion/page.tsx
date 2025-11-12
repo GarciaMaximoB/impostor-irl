@@ -31,14 +31,16 @@ export default function AssignmentPage() {
 
   const category = useMemo(
     () => getCategoryById(settings.categoryId),
-    [settings.categoryId],
+    [settings.categoryId]
   );
 
   const guardResult = useMemo(() => {
     if (!category) {
       return {
         success: false as const,
-        error: { message: "Selecciona una categoría válida antes de continuar." },
+        error: {
+          message: "Selecciona una categoría válida antes de continuar.",
+        },
       };
     }
     return assignRolesGuard({ players, category });
@@ -53,7 +55,7 @@ export default function AssignmentPage() {
   const generateAssignment = useCallback(() => {
     if (!category) {
       setErrorMessage(
-        "Selecciona una categoría válida antes de continuar con la asignación.",
+        "Selecciona una categoría válida antes de continuar con la asignación."
       );
       return;
     }
@@ -76,7 +78,7 @@ export default function AssignmentPage() {
         setErrorMessage(error.message);
       } else {
         setErrorMessage(
-          "No pudimos generar la asignación. Intenta nuevamente.",
+          "No pudimos generar la asignación. Intenta nuevamente."
         );
       }
     } finally {
@@ -103,9 +105,7 @@ export default function AssignmentPage() {
 
   const handleStartReveal = useCallback(() => {
     if (!assignment.current) {
-      setErrorMessage(
-        "Genera la asignación antes de comenzar la revelación.",
-      );
+      setErrorMessage("Genera la asignación antes de comenzar la revelación.");
       return;
     }
     router.push("/revelacion");
@@ -114,14 +114,14 @@ export default function AssignmentPage() {
   const handleReroll = useCallback(() => {
     if (!category) {
       setErrorMessage(
-        "Selecciona una categoría válida antes de continuar con la asignación.",
+        "Selecciona una categoría válida antes de continuar con la asignación."
       );
       return;
     }
 
     if (assignment.rerolls >= 3) {
       setErrorMessage(
-        "Has alcanzado el máximo de resorteos recomendados. Revisa la configuración si necesitas cambiar datos.",
+        "Has alcanzado el máximo de resorteos recomendados. Revisa la configuración si necesitas cambiar datos."
       );
       return;
     }
@@ -137,14 +137,16 @@ export default function AssignmentPage() {
         payload: { assignment: nextAssignment, mode: "reroll" },
       });
 
-      setInfoMessage("Sorteo actualizado. La palabra se revelará turno a turno.");
+      setInfoMessage(
+        "Sorteo actualizado. La palabra se revelará turno a turno."
+      );
     } catch (error) {
       setInfoMessage(null);
       if (error instanceof AssignRolesError) {
         setErrorMessage(error.message);
       } else {
         setErrorMessage(
-          "No pudimos generar la asignación. Intenta nuevamente.",
+          "No pudimos generar la asignación. Intenta nuevamente."
         );
       }
     } finally {
@@ -182,15 +184,6 @@ export default function AssignmentPage() {
                 Gestionar jugadores
               </Link>
             </ActionsRow>
-          </div>
-          <div className="hidden rounded-3xl border border-slate-200 bg-white/70 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300 lg:block">
-            <h2 className="text-base font-semibold text-slate-900 dark:text-white">
-              Tip de moderación
-            </h2>
-            <p className="mt-2">
-              Confirma en voz alta que todos están listos antes de pasar el
-              dispositivo. Si necesitas cambiar algo, vuelve a la configuración.
-            </p>
           </div>
         </div>
       </header>
@@ -281,4 +274,3 @@ function BlockingMessage({
     </section>
   );
 }
-
