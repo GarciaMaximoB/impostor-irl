@@ -36,7 +36,7 @@ export default function InGamePage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 py-8 text-center dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-100 via-white to-white px-4 py-8 text-center dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
     >
       <header className="mb-8 w-full max-w-2xl">
         <motion.div
@@ -68,7 +68,7 @@ export default function InGamePage() {
             className="space-y-4"
           >
             <motion.h1
-              className="text-5xl font-bold text-slate-900 sm:text-6xl md:text-7xl dark:text-white"
+              className="text-4xl font-bold text-slate-900 md:text-5xl lg:text-6xl dark:text-white"
               animate={{
                 scale: [1, 1.02, 1],
               }}
@@ -85,7 +85,7 @@ export default function InGamePage() {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-xl text-slate-600 sm:text-2xl dark:text-slate-300"
+              className="text-lg text-slate-600 md:text-xl lg:text-2xl dark:text-slate-300"
             >
               Discutan entre ustedes y descubran quién es el impostor.
             </motion.p>

@@ -11,14 +11,14 @@ interface RoleCardProps {
 
 export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
   return (
-    <div className="w-full max-w-2xl space-y-6">
+    <div className="w-full max-w-2xl space-y-6 md:max-w-3xl lg:max-w-4xl lg:space-y-8 xl:max-w-5xl">
       <motion.div
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4 }}
         className="text-center"
       >
-        <h2 className="text-2xl font-semibold text-slate-700 dark:text-slate-300 sm:text-3xl">
+        <h2 className="text-2xl font-semibold text-slate-700 dark:text-slate-300 md:text-3xl lg:text-4xl xl:text-5xl">
           {player.name}
         </h2>
       </motion.div>
@@ -28,7 +28,7 @@ export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.1 }}
         className={`
-          relative overflow-hidden rounded-3xl border-2 p-8 shadow-2xl transition-all
+          relative overflow-hidden rounded-3xl border-2 p-8 shadow-2xl transition-all md:p-10 lg:p-12 xl:p-16
           ${
             isImpostor
               ? "border-rose-500 bg-gradient-to-br from-rose-50 via-rose-100 to-rose-50 dark:border-rose-400 dark:from-rose-950/30 dark:via-rose-900/20 dark:to-rose-950/30"
@@ -55,7 +55,7 @@ export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.35 }}
-              className="text-lg font-medium text-slate-700 dark:text-slate-200"
+              className="text-lg font-medium text-slate-700 dark:text-slate-200 md:text-xl lg:text-2xl"
             >
               Tu rol es: <strong>IMPOSTOR</strong>
             </motion.p>
@@ -63,7 +63,7 @@ export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
-              className="text-sm text-slate-600 dark:text-slate-400"
+              className="text-sm text-slate-600 dark:text-slate-400 md:text-base lg:text-lg"
             >
               No conozcas la palabra secreta. Deberás descubrirla durante el
               juego.
@@ -93,7 +93,7 @@ export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
                 type: "spring",
                 stiffness: 200,
               }}
-              className="text-4xl font-bold text-slate-900 dark:text-white sm:text-5xl"
+              className="text-3xl font-bold text-slate-900 dark:text-white md:text-4xl lg:text-6xl xl:text-7xl"
             >
               {word}
             </motion.p>
@@ -101,7 +101,7 @@ export function RoleCard({ player, word, isImpostor }: RoleCardProps) {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.45 }}
-              className="text-sm text-slate-600 dark:text-slate-400"
+              className="text-sm text-slate-600 dark:text-slate-400 md:text-base lg:text-lg"
             >
               Esta es tu palabra. No la reveles a otros jugadores.
             </motion.p>

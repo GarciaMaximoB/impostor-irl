@@ -9,7 +9,7 @@ interface HandoffScreenProps {
 
 export function HandoffScreen({ playerName, onReady }: HandoffScreenProps) {
   return (
-    <div className="flex w-full max-w-xl flex-col items-center gap-6 text-center">
+    <div className="flex w-full max-w-xl flex-col items-center gap-6 text-center md:max-w-2xl lg:max-w-3xl lg:gap-8 xl:max-w-4xl">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -28,7 +28,7 @@ export function HandoffScreen({ playerName, onReady }: HandoffScreenProps) {
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="text-3xl font-semibold text-slate-900 dark:text-white sm:text-4xl"
+          className="text-2xl font-semibold text-slate-900 dark:text-white md:text-3xl lg:text-5xl xl:text-6xl"
         >
           Pasa el dispositivo a {playerName}
         </motion.h2>
@@ -36,7 +36,7 @@ export function HandoffScreen({ playerName, onReady }: HandoffScreenProps) {
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="text-base text-slate-600 dark:text-slate-300"
+          className="text-base text-slate-600 dark:text-slate-300 md:text-lg lg:text-xl"
         >
           Cuando {playerName} diga que está listo, presiona el botón para mostrar su rol.
         </motion.p>

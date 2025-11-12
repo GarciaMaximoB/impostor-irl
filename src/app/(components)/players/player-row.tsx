@@ -111,7 +111,7 @@ export function PlayerRow({
       <span className="sr-only">{statusLabel}</span>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-3 sm:flex-row sm:items-center"
+        className="flex flex-col gap-3 md:flex-row md:items-center"
         noValidate
       >
         <div className="flex-1">

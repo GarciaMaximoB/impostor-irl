@@ -13,7 +13,7 @@ export function HeroSection({
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#1f173f] via-[#271f5b] to-[#0d0b1f] px-6 py-16 text-white shadow-2xl sm:px-10 sm:py-20"
+      className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#1f173f] via-[#271f5b] to-[#0d0b1f] px-4 py-12 text-white shadow-2xl md:px-8 md:py-16 lg:px-10 lg:py-20"
     >
       <div className="absolute inset-0 opacity-40">
         <div className="absolute right-[-20%] top-[-10%] h-60 w-60 rounded-full bg-[radial-gradient(circle_at_top,rgba(255,154,158,0.55),rgba(36,25,85,0))]" />
@@ -32,21 +32,21 @@ export function HeroSection({
           <div className="space-y-4">
             <h1
               id="hero-title"
-              className="text-balance text-4xl font-semibold leading-tight tracking-tight sm:text-5xl"
+              className="text-balance text-3xl font-semibold leading-tight tracking-tight md:text-4xl lg:text-5xl"
             >
               El Impostor
-              <span className="block text-lg font-normal text-emerald-200 sm:text-xl">
+              <span className="block text-base font-normal text-emerald-200 md:text-lg lg:text-xl">
                 Asigna roles y palabra secreta en menos de un minuto.
               </span>
             </h1>
-            <p className="text-pretty text-base leading-relaxed text-slate-100 sm:text-lg">
+            <p className="text-pretty text-sm leading-relaxed text-slate-100 md:text-base lg:text-lg">
               Diseñado para partidas presenciales: configura la sala, reparte la
               palabra y designa al impostor con una interfaz mobile-first
               pensada para pasar el dispositivo entre jugadores.
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-4 text-sm font-medium sm:flex-row">
+        <div className="flex flex-col gap-4 text-sm font-medium md:flex-row">
           <Link
             href="#flujo"
             className="inline-flex items-center justify-center rounded-full bg-emerald-300 px-6 py-3 text-slate-900 transition hover:bg-emerald-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-100"
@@ -60,7 +60,7 @@ export function HeroSection({
             Explorar categorías
           </Link>
         </div>
-        <dl className="grid gap-6 sm:grid-cols-3">
+        <dl className="grid gap-4 md:gap-6 md:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5 text-center backdrop-blur">
             <dt className="text-xs uppercase tracking-widest text-white/70">
               Jugadores mínimos

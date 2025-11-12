@@ -45,7 +45,7 @@ export function VictoryScreen({ winner, onNewRound }: VictoryScreenProps) {
             className="space-y-4"
           >
             <motion.h1
-              className="text-5xl font-bold text-white sm:text-6xl md:text-7xl"
+              className="text-4xl font-bold text-white md:text-5xl lg:text-6xl"
               animate={{
                 scale: [1, 1.05, 1],
               }}
@@ -61,7 +61,7 @@ export function VictoryScreen({ winner, onNewRound }: VictoryScreenProps) {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-xl text-white/90 sm:text-2xl"
+              className="text-lg text-white/90 md:text-xl lg:text-2xl"
             >
               {isImpostorWin
                 ? "El impostor logró sobrevivir hasta el final."
@@ -73,7 +73,7 @@ export function VictoryScreen({ winner, onNewRound }: VictoryScreenProps) {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center"
+            className="mt-8 flex flex-col gap-4 md:flex-row md:justify-center"
           >
             {onNewRound ? (
               <motion.button

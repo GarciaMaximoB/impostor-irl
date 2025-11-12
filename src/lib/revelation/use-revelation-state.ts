@@ -16,7 +16,6 @@ export interface UseRevelationStateReturn {
   totalPlayers: number;
   progress: number;
   startReveal: () => void;
-  showAgain: () => void;
   completeReveal: () => void;
   reset: () => void;
 }
@@ -58,12 +57,6 @@ export function useRevelationState(
     setPhase("reveal");
   }, []);
 
-  const showAgain = useCallback(() => {
-    if (phase !== "reveal") {
-      setPhase("reveal");
-    }
-  }, [phase]);
-
   const completeReveal = useCallback(() => {
     if (currentPlayerId) {
       setRevealedPlayers((prev) => {
@@ -97,7 +90,6 @@ export function useRevelationState(
     totalPlayers,
     progress,
     startReveal,
-    showAgain,
     completeReveal,
     reset,
   };

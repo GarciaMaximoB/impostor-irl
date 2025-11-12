@@ -21,7 +21,9 @@ interface NameValidationError {
   error: string;
 }
 
-type ValidateName = (input: string) => NameValidationResult | NameValidationError;
+type ValidateName = (
+  input: string
+) => NameValidationResult | NameValidationError;
 
 interface PlayerFormProps {
   onSubmit: (name: string) => void;
@@ -59,7 +61,7 @@ export function PlayerForm({
       setError(null);
       return result.value;
     },
-    [validateName],
+    [validateName]
   );
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +105,7 @@ export function PlayerForm({
       >
         Agregar jugador
       </label>
-      <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+      <div className="mt-2 flex flex-col gap-3 md:flex-row">
         <input
           id={inputId}
           name="playerName"
@@ -117,7 +119,7 @@ export function PlayerForm({
           className={clsx(
             "w-full rounded-full border border-slate-300 bg-white px-4 py-2 text-base text-slate-900 shadow-sm transition focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:focus:border-slate-500 dark:focus:ring-slate-700",
             error &&
-              "border-rose-500 focus:border-rose-500 focus:ring-rose-200 dark:border-rose-500 dark:focus:border-rose-400",
+              "border-rose-500 focus:border-rose-500 focus:ring-rose-200 dark:border-rose-500 dark:focus:border-rose-400"
           )}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${inputId}-error` : undefined}
@@ -125,7 +127,7 @@ export function PlayerForm({
         <button
           type="submit"
           disabled={isSubmitDisabled}
-          className="inline-flex w-full items-center justify-center rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none dark:bg-white dark:text-slate-900 dark:shadow-white/30 dark:hover:bg-slate-100 dark:focus-visible:outline-white sm:w-auto"
+          className="inline-flex w-full items-center justify-center rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none dark:bg-white dark:text-slate-900 dark:shadow-white/30 dark:hover:bg-slate-100 dark:focus-visible:outline-white md:w-auto"
         >
           Agregar
         </button>
@@ -146,5 +148,3 @@ export function PlayerForm({
     </form>
   );
 }
-
-

@@ -22,7 +22,7 @@ export function PlayersToolbar({
   const hasIssues = !hasMinimumPlayers || duplicateCount > 0;
 
   return (
-    <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 className="text-base font-semibold text-slate-900 dark:text-white">
           Lista de jugadores

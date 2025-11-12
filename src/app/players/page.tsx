@@ -227,13 +227,13 @@ export default function PlayersPage() {
   }, [duplicateNames]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-white pb-24 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 via-white to-white pb-24 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <header className="bg-transparent">
-        <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-10 sm:px-8">
+        <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-10 md:px-8">
           <span className="inline-flex w-fit items-center rounded-full bg-slate-900/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:bg-white/10 dark:text-slate-200">
             Pantalla 02 · Gestión de jugadores
           </span>
-          <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl dark:text-white">
+          <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl dark:text-white">
             Administra la lista de jugadores antes de iniciar la partida.
           </h1>
           <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300">
@@ -255,7 +255,7 @@ export default function PlayersPage() {
         </div>
       </header>
 
-      <main className="mx-auto grid w-full max-w-5xl gap-8 px-4 sm:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] sm:px-8">
+      <main className="mx-auto grid w-full max-w-5xl gap-8 px-4 md:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] md:px-8">
         <section className="space-y-5">
           <PlayersToolbar
             total={players.length}
@@ -325,7 +325,7 @@ export default function PlayersPage() {
         </aside>
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-white via-white/95 to-white/60 px-4 py-4 shadow-[0_-20px_60px_-20px_rgba(15,23,42,0.25)] dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-950/70 sm:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-white via-white/95 to-white/60 px-4 py-4 shadow-[0_-20px_60px_-20px_rgba(15,23,42,0.25)] dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-950/70 md:hidden">
         <button
           type="button"
           onClick={handleSaveAndReturn}

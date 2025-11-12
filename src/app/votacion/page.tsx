@@ -171,12 +171,12 @@ export default function VotingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-100 via-white to-white pb-24 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <header className="bg-transparent">
-        <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="space-y-4">
             <span className="inline-flex w-fit items-center rounded-full bg-slate-900/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:bg-white/10 dark:text-slate-200">
               Votación
             </span>
-            <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl dark:text-white">
+            <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl dark:text-white">
               Elige a quién eliminar
             </h1>
             <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300">
@@ -194,7 +194,7 @@ export default function VotingPage() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl px-4 sm:px-8">
+      <main className="mx-auto w-full max-w-5xl px-4 md:px-8">
         {activePlayers.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -207,7 +207,7 @@ export default function VotingPage() {
             </p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {activePlayers.map((player, index) => (
               <PlayerVoteCard
                 key={player.id}

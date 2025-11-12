@@ -194,7 +194,7 @@ export default function RevelationPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-100 via-white to-white px-4 py-8 text-center dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+      className="relative flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-100 via-white to-white px-4 py-8 text-center dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
     >
       <div
         className="sr-only"
@@ -209,23 +209,21 @@ export default function RevelationPage() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="mb-8 w-full max-w-2xl"
+        className="absolute left-4 top-4 z-10 md:left-8 md:top-8"
       >
-        <div className="flex items-center justify-between">
-          <Link
-            href="/asignacion"
-            onClick={(e) => {
-              e.preventDefault();
-              handleBack();
-            }}
-            className="inline-flex items-center rounded-full border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus-visible:outline-white"
-          >
-            ← Volver a resumen
-          </Link>
-        </div>
+        <Link
+          href="/asignacion"
+          onClick={(e) => {
+            e.preventDefault();
+            handleBack();
+          }}
+          className="inline-flex items-center rounded-full border border-slate-300 bg-white/90 px-3 py-1.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition hover:bg-white hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus-visible:outline-white"
+        >
+          ← Volver a resumen
+        </Link>
       </motion.header>
 
-      <main className="flex w-full max-w-4xl flex-col items-center gap-8">
+      <main className="flex w-full max-w-5xl flex-col items-center gap-8 lg:max-w-6xl lg:gap-12 xl:max-w-7xl">
         <motion.div
           key={`stepper-${revelation.state.currentIndex}`}
           initial={{ y: 20, opacity: 0 }}
@@ -280,7 +278,6 @@ export default function RevelationPage() {
             >
               <ActionFooter
                 onComplete={handleCompleteReveal}
-                onShowAgain={revelation.showAgain}
                 isLastPlayer={revelation.isLastPlayer}
               />
             </motion.div>

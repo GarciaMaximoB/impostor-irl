@@ -31,7 +31,7 @@ export function AssignmentSummary({
       </header>
 
       <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-800/40">
-        <dl className="grid gap-3 text-sm text-slate-600 dark:text-slate-300 sm:grid-cols-2">
+        <dl className="grid gap-3 text-sm text-slate-600 dark:text-slate-300 md:grid-cols-2">
           <div>
             <dt className="font-medium text-slate-500 dark:text-slate-400">
               Categoría seleccionada

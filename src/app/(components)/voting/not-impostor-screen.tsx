@@ -62,14 +62,14 @@ export function NotImpostorScreen({
                 />
               </svg>
             </motion.div>
-            <h1 className="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
+            <h1 className="text-3xl font-bold text-white md:text-4xl lg:text-5xl">
               {playerName} no era el impostor
             </h1>
             <motion.p
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-xl text-white/90 sm:text-2xl"
+              className="text-lg text-white/90 md:text-xl lg:text-2xl"
             >
               Deben seguir intentando encontrar al impostor.
             </motion.p>
