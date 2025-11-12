@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ConfigurationForm } from "@/app/(components)/ConfigurationForm";
 import {
   useGameSessionDispatch,
@@ -15,10 +16,10 @@ import { loadPlayers } from "@/lib/storage/players";
 import { usePersistedSettings } from "@/lib/storage/use-persisted-settings";
 
 function ConfigurationPage() {
+  const router = useRouter();
   const { settings, players, status } = useGameSessionState();
   const dispatch = useGameSessionDispatch();
   const [guardError, setGuardError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [highContrast, setHighContrast] = useState(false);
 
@@ -49,7 +50,6 @@ function ConfigurationPage() {
   const handleSubmit = useCallback(
     (nextSettings: GameSessionSettings) => {
       setIsSubmitting(true);
-      setSuccessMessage(null);
 
       const category = getCategoryById(nextSettings.categoryId);
       const result = assignRolesGuard({ players, category });
@@ -64,12 +64,10 @@ function ConfigurationPage() {
       dispatch({ type: "SET_STATUS", payload: "ready" });
       persist(nextSettings);
       setGuardError(null);
-      setSuccessMessage(
-        "Configuración lista. Avanza a la asignación de roles cuando estés listo."
-      );
       setIsSubmitting(false);
+      router.push("/asignacion");
     },
-    [dispatch, persist, players]
+    [dispatch, persist, players, router]
   );
 
   const defaultSettings = useMemo(() => settings, [settings]);
@@ -132,11 +130,6 @@ function ConfigurationPage() {
         />
         <div className="space-y-6">
           <PlayersSummaryCard players={players} />
-          {successMessage && (
-            <div className="rounded-2xl border border-emerald-400 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 shadow-sm dark:border-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-300">
-              {successMessage}
-            </div>
-          )}
           <aside className="rounded-2xl border border-slate-200 bg-white/70 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
             <h2 className="text-base font-semibold text-slate-900 dark:text-white">
               Próximos pasos
