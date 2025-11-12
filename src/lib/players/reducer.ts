@@ -60,6 +60,7 @@ export function normalizePlayers(players: Player[]): Player[] {
   return players.map((player, index) => ({
     ...player,
     order: index,
+    eliminado: player.eliminado,
   }));
 }
 
@@ -68,6 +69,7 @@ function clonePlayer(player: Player): Player {
     id: player.id,
     name: player.name,
     order: player.order,
+    eliminado: player.eliminado,
   };
 }
 
