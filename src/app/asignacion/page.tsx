@@ -111,6 +111,47 @@ export default function AssignmentPage() {
     router.push("/revelacion");
   }, [assignment.current, router]);
 
+  const handleReroll = useCallback(() => {
+    if (!category) {
+      setErrorMessage(
+        "Selecciona una categoría válida antes de continuar con la asignación.",
+      );
+      return;
+    }
+
+    if (assignment.rerolls >= 3) {
+      setErrorMessage(
+        "Has alcanzado el máximo de resorteos recomendados. Revisa la configuración si necesitas cambiar datos.",
+      );
+      return;
+    }
+
+    setIsGenerating(true);
+    setErrorMessage(null);
+
+    try {
+      const nextAssignment = assignRoles({ players, category });
+
+      dispatch({
+        type: "SET_ASSIGNMENT",
+        payload: { assignment: nextAssignment, mode: "reroll" },
+      });
+
+      setInfoMessage("Sorteo actualizado. La palabra se revelará turno a turno.");
+    } catch (error) {
+      setInfoMessage(null);
+      if (error instanceof AssignRolesError) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage(
+          "No pudimos generar la asignación. Intenta nuevamente.",
+        );
+      }
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [category, dispatch, players, assignment.rerolls]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-100 via-white to-white pb-24 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <header className="bg-transparent">
@@ -189,7 +230,10 @@ export default function AssignmentPage() {
             canStart={Boolean(assignment.current) && guardResult.success}
             isGenerating={isGenerating}
             onStart={handleStartReveal}
+            onReroll={handleReroll}
             infoMessage={infoMessage}
+            rerolls={assignment.rerolls}
+            maxRerolls={3}
           />
         </aside>
       </main>
