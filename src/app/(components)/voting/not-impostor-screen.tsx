@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useSound } from "@/lib/audio/use-sound";
 
 interface NotImpostorScreenProps {
   playerName: string;
@@ -11,6 +12,11 @@ export function NotImpostorScreen({
   playerName,
   onContinue,
 }: NotImpostorScreenProps) {
+  // Reproducir sonido de pérdida al montar el componente
+  useSound("/sounds/lose.mp3", {
+    volume: 0.6,
+    playOnMount: true,
+  });
   return (
     <motion.div
       initial={{ opacity: 0 }}

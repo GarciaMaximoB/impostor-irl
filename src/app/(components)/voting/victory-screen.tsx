@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import clsx from "clsx";
+import { useSound } from "@/lib/audio/use-sound";
 
 interface VictoryScreenProps {
   winner: "impostor" | "non-impostors";
@@ -11,6 +12,12 @@ interface VictoryScreenProps {
 
 export function VictoryScreen({ winner, onNewRound }: VictoryScreenProps) {
   const isImpostorWin = winner === "impostor";
+
+  // Reproducir sonido de victoria al montar el componente
+  useSound("/sounds/victory.mp3", {
+    volume: 0.6,
+    playOnMount: true,
+  });
 
   return (
     <motion.div
@@ -21,7 +28,7 @@ export function VictoryScreen({ winner, onNewRound }: VictoryScreenProps) {
         "flex min-h-screen flex-col items-center justify-center px-4 py-8 text-center",
         isImpostorWin
           ? "bg-gradient-to-br from-red-600 via-red-700 to-red-800"
-          : "bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700",
+          : "bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700"
       )}
     >
       <main className="flex w-full max-w-2xl flex-col items-center gap-8">
@@ -93,4 +100,3 @@ export function VictoryScreen({ winner, onNewRound }: VictoryScreenProps) {
     </motion.div>
   );
 }
-
