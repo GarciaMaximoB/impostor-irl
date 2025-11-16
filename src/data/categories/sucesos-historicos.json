@@ -1,0 +1,16 @@
+{
+    "id": "sucesos-historicos",
+    "name": "Sucesos históricos",
+    "description": "Lista de sucesos históricos de la bandeja.",
+    "locale": "es-AR",
+    "words": [
+        "El dia D",
+        "La caida de Paiva",
+        "El te amo de Toto",
+        "Ibar corriendo a Mati",
+        "'VAMO ÑIBU'",
+        "'Permiso'",
+        "Toto haciendose caca corriendo"
+    ]
+  }
+  

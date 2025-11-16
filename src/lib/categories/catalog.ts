@@ -5,6 +5,11 @@ import futbolistasArgentinos from "@/data/categories/futbolistas-argentinos-reco
 import futbolistasInternacionales from "@/data/categories/futbolistas-internacionales-reconocidos.json";
 import objetos from "@/data/categories/objetos.json";
 import presidentesArgentinos from "@/data/categories/presidentes-argentinos.json";
+import sucesosHistoricos from "@/data/categories/sucesos-historicos.json";
+import personajesHistoricos from "@/data/categories/personajes-historicos.json";
+import comidas from "@/data/categories/comidas.json";
+import profesoresET24 from "@/data/categories/profesores-et24.json";
+
 
 export const CATEGORY_CATALOG: Category[] = [
   famososArgentinos,
@@ -13,6 +18,10 @@ export const CATEGORY_CATALOG: Category[] = [
   futbolistasInternacionales,
   objetos,
   presidentesArgentinos,
+  sucesosHistoricos,
+  personajesHistoricos,
+  comidas,
+  profesoresET24,
 ];
 
 export function getCategoryById(id: string | undefined): Category | undefined {
