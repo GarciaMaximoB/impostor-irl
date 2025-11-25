@@ -30,7 +30,7 @@ export function assignRolesGuard({
       success: false,
       error: {
         code: "NOT_ENOUGH_PLAYERS",
-        message: "Agrega al menos 4 jugadores para comenzar.",
+        message: `Agrega al menos ${MINIMUM_PLAYERS} jugadores para comenzar.`,
       },
     };
   }

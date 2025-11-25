@@ -9,7 +9,7 @@ import type {
   Player,
 } from "./types";
 
-export const MINIMUM_PLAYERS = 4;
+export const MINIMUM_PLAYERS = 3;
 
 const emptyAssignmentState: GameSessionAssignment = {
   current: null,
@@ -28,7 +28,7 @@ export const initialGameSessionState: GameSessionState = Object.freeze({
 
 export function gameSessionReducer(
   state: GameSessionState,
-  action: GameSessionAction,
+  action: GameSessionAction
 ): GameSessionState {
   switch (action.type) {
     case "SET_SETTINGS":
@@ -105,9 +105,7 @@ export function gameSessionReducer(
       return {
         ...state,
         players: state.players.map((player) =>
-          player.id === playerId
-            ? { ...player, eliminado: true }
-            : player,
+          player.id === playerId ? { ...player, eliminado: true } : player
         ),
       };
     }
@@ -161,7 +159,7 @@ function createHistoryEntry({
 }
 
 export function sanitizeSettings(
-  settings: GameSessionSettings,
+  settings: GameSessionSettings
 ): GameSessionSettings {
   const trimmedRoomName = settings.roomName?.trim();
 
@@ -170,4 +168,3 @@ export function sanitizeSettings(
     roomName: trimmedRoomName ? trimmedRoomName : undefined,
   };
 }
-

@@ -2,6 +2,7 @@
 
 import type { Player } from "@/lib/players/types";
 import { PlayerRow } from "@/app/(components)/players/player-row";
+import { MINIMUM_PLAYERS } from "@/lib/game/session";
 
 interface NameValidationResult {
   success: true;
@@ -37,7 +38,7 @@ export function PlayerList({
   if (players.length === 0) {
     return (
       <section className="rounded-3xl border border-dashed border-slate-300 bg-white/60 p-6 text-center text-sm text-slate-500 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300">
-        Agrega al menos cuatro jugadores únicos para poder iniciar la partida.
+        Agrega al menos {MINIMUM_PLAYERS} jugadores únicos para poder iniciar la partida.
       </section>
     );
   }

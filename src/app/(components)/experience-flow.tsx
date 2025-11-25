@@ -1,3 +1,5 @@
+import { MINIMUM_PLAYERS } from "@/lib/game/session";
+
 interface FlowStep {
   title: string;
   description: string;
@@ -9,7 +11,7 @@ const FLOW_STEPS: FlowStep[] = [
     title: "Configura la sala",
     description:
       "Añade jugadores únicos, define la categoría y asegura que cada palabra está disponible antes de comenzar.",
-    cta: "Validación automática de duplicados y mínimo de 4 jugadores.",
+    cta: `Validación automática de duplicados y mínimo de ${MINIMUM_PLAYERS} jugadores.`,
   },
   {
     title: "Asigna palabra e impostor",
@@ -70,6 +72,7 @@ export function ExperienceFlow() {
     </section>
   );
 }
+
 
 
 

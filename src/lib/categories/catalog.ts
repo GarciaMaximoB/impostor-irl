@@ -18,10 +18,10 @@ export const CATEGORY_CATALOG: Category[] = [
   futbolistasInternacionales,
   objetos,
   presidentesArgentinos,
-  sucesosHistoricos,
-  personajesHistoricos,
+  // sucesosHistoricos,
+  // personajesHistoricos,
   comidas,
-  profesoresET24,
+  // profesoresET24,
 ];
 
 export function getCategoryById(id: string | undefined): Category | undefined {
